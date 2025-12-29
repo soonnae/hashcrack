@@ -270,7 +270,7 @@ def btexeccwd(command,scwd,show=0):
        print("RUN: "+command)
     
     if scwd is not None:
-        p = subprocess.Popen(command, shell=True,
+        p = subprocess.Popen(command.split(), shell=False,
                              cwd=scwd,                             
                              stderr=subprocess.STDOUT)
         junk = p.communicate()

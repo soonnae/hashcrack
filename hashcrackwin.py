@@ -390,7 +390,7 @@ def run_command(command,scwd):
     print("Command "+command)
 
     if scwd is not None:
-        p = subprocess.Popen(command, shell=True,
+        p = subprocess.Popen(command.split(), shell=False,
                              cwd=scwd,                             
                              stderr=subprocess.STDOUT)
         junk = p.communicate()
@@ -892,4 +892,3 @@ def main():
   
 if __name__== "__main__":
   main()
-
