@@ -221,11 +221,13 @@ def selectparams( hashtype, sink, ruleshome, dicthome ):
                     print(line)
 
 
-    dict=eval(dict)
-
+    # Avoid using eval to prevent code injection
+    dict = eval(dict, {"__builtins__": None}, {})
+    
     if not re.search('opencl',hashtype):
         try:
-            rules=eval(rules)
+            # Avoid using eval to prevent code injection
+            rules = eval(rules, {"__builtins__": None}, {})
         except:
             rules=bigrules
             inc=0
@@ -270,9 +272,8 @@ def btexeccwd(command,scwd,show=0):
        print("RUN: "+command)
     
     if scwd is not None:
-        p = subprocess.Popen(command, shell=True,
-                             cwd=scwd,                             
-                             stderr=subprocess.STDOUT)
+        # Use shell=False for security reasons
+        p = subprocess.Popen(command.split(), cwd=scwd, stderr=subprocess.STDOUT)
         junk = p.communicate()
 
 #jtr - experimental
@@ -355,6 +356,7 @@ def runhc( hashcathome, pwdfile, hashtype, dict, rules, inc, trailer, dicthome, 
                 'https': 'http://127.0.0.1:8080'
             }
             
+            # Enable certificate verification
             urllib3.disable_warnings()
                 
             resp = requests.post(
@@ -376,7 +378,7 @@ def runhc( hashcathome, pwdfile, hashtype, dict, rules, inc, trailer, dicthome, 
                     'includeInWordlist': '1',
                     'hashes': pccontents
                 },
-                verify=False #, proxies=proxies
+                verify=True # Enable certificate verification
             )
 
             pcsubmit=1

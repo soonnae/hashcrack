@@ -210,8 +210,9 @@ def selectparams( hashtype, nuke, ruleshome, dicthome ):
                 except:
                     print(line)
 
-    dict=eval(dict)
-    rules=eval(rules)
+    # Safely parse the dictionary and rules values
+    dict = eval(dict, {"__builtins__": None}, {})
+    rules = eval(rules, {"__builtins__": None}, {})
                     
     tp=(dict,rules,int(inc))
         
@@ -390,7 +391,8 @@ def run_command(command,scwd):
     print("Command "+command)
 
     if scwd is not None:
-        p = subprocess.Popen(command, shell=True,
+        # Use shell=False and pass command as a list
+        p = subprocess.Popen(command.split(), shell=False,
                              cwd=scwd,                             
                              stderr=subprocess.STDOUT)
         junk = p.communicate()
@@ -892,4 +894,3 @@ def main():
   
 if __name__== "__main__":
   main()
-

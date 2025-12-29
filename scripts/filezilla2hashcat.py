@@ -10,7 +10,7 @@
 
 import sys
 import binascii
-from xml.etree.ElementTree import ElementTree
+from defusedxml.ElementTree import ElementTree
 
 
 def process_file(filename):
